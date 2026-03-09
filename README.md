@@ -106,4 +106,4 @@ MIT License - Feel free to modify and distribute!
 
 ⭐ **Star this repository if you found it helpful!**
 
-Made with ❤️ by generacyan
+Made with ❤️ by altgrinder
