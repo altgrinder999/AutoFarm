@@ -2,7 +2,7 @@
 
 ![Version](https://img.shields.io/badge/version-v1.1-blue)
 ![Status](https://img.shields.io/badge/status-beta-orange)
-![Made by](https://img.shields.io/badge/made%20by-generacyan-purple)
+![Made by](https://img.shields.io/badge/made%20by-AltFarmer-purple)
 
 Modern autofarm script for Bridge Duels with Discord webhooks integration and glassmorphism UI.
 
