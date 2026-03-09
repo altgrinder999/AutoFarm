@@ -14,7 +14,7 @@ repeat task.wait() until player.Character
 task.wait(2)
 
 -- WEBHOOK DE DISCORD
-local webhookURL = "https://discord.com/api/webhooks/1472828293513220187/VwrS5wzxn_RzjPaL6t531-CIxlX-RUBGVXMgFem0Fad8nX7DBzhURj9wv5PJXNTcy98X"
+local webhookURL = "https://discord.com/api/webhooks/1480662208470843473/-QuDvIwsx-npvlQxkpAL4dPHS7xwcM6AMpSoptRYt06oblRWRq_Gla7p0spTCn8P7IIH"
 
 -- Variable para tiempo de inicio
 local startTime = os.time()
