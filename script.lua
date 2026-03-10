@@ -1,12 +1,29 @@
--- AUTO-EXECUTE: Guardar el script en autoexec
-if not getgenv().AutoFarmLoaded then
-    getgenv().AutoFarmLoaded = true
+-- AUTO-EXECUTE SETUP
+if not getgenv().BridgeDuelsAutoFarmLoaded then
+    getgenv().BridgeDuelsAutoFarmLoaded = true
+    
+    print("🔄 First time setup - Saving to autoexec...")
     
     -- Guardar este script para auto-execute
-    if writefile then
-        local scriptContent = game:HttpGet("https://raw.githubusercontent.com/altgrinder999/AutoFarm/main/script.lua")
-        writefile("autoexec/bridge_duels_autofarm.lua", scriptContent)
-        print("✅ Script guardado en autoexec!")
+    if writefile and isfolder then
+        task.spawn(function()
+            pcall(function()
+                -- Verificar si existe carpeta autoexec
+                if not isfolder("autoexec") then
+                    makefolder("autoexec")
+                end
+                
+                -- Descargar el script desde GitHub
+                local scriptURL = "https://raw.githubusercontent.com/altgrinder999/AutoFarm/main/script.lua"
+                local scriptContent = game:HttpGet(scriptURL)
+                
+                -- Guardarlo en autoexec
+                writefile("autoexec/bridge_duels_autofarm.lua", scriptContent)
+                print("✅ Script saved to autoexec! Will auto-run on next game load.")
+            end)
+        end)
+    else
+        warn("⚠️ Your executor doesn't support file functions. Auto-execute won't work.")
     end
 end
 
@@ -644,135 +661,4 @@ CloseBtn.MouseButton1Click:Connect(function()
 end)
 
 ResetBtn.MouseEnter:Connect(function()
-    smoothTween(ResetBtn, {BackgroundTransparency = 0}, 0.2)
-end)
-
-ResetBtn.MouseLeave:Connect(function()
-    smoothTween(ResetBtn, {BackgroundTransparency = 0.2}, 0.2)
-end)
-
-ResetBtn.MouseButton1Click:Connect(function()
-    smoothTween(WinsCard, {BackgroundColor3 = Color3.fromRGB(255, 100, 100)}, 0.2)
-    task.wait(0.1)
-    totalWins = 0
-    WinsValue.Text = "0"
-    saveWins()
-    task.wait(0.1)
-    smoothTween(WinsCard, {BackgroundColor3 = Color3.fromRGB(35, 35, 45)}, 0.2)
-end)
-
-ReopenBtn.MouseButton1Click:Connect(function()
-    smoothTween(ReopenBtn, {Size = UDim2.new(0, 0, 0, 0)}, 0.2)
-    task.wait(0.2)
-    ReopenBtn.Visible = false
-    MainContainer.Visible = true
-    smoothTween(MainContainer, {BackgroundTransparency = 0.05}, 0.4)
-    smoothTween(BlurEffect, {Size = 10}, 0.4)
-    for _, child in pairs(MainContainer:GetDescendants()) do
-        if child:IsA("GuiObject") then
-            if child:IsA("TextLabel") or child:IsA("TextButton") then
-                smoothTween(child, {TextTransparency = 0}, 0.4)
-            end
-            if child.Name:find("Card") or child.Name:find("Container") or child.Name:find("Btn") then
-                local originalTransparency = 0.2
-                if child.Name == "Header" or child.Name == "AvatarContainer" or child.Name == "TimerContainer" then
-                    originalTransparency = 0.2
-                end
-                smoothTween(child, {BackgroundTransparency = originalTransparency}, 0.4)
-            end
-        end
-    end
-end)
-
--- Animación de entrada
-smoothTween(BlurEffect, {Size = 10}, 0.5)
-
--- Loop principal
-while true do
-    for i = 20, 1, -1 do
-        TimerLabel.Text = "⏳ Winning In: " .. i .. "s"
-        smoothTween(TimerStroke, {Color = Color3.fromRGB(255, 215, 0)}, 0.3)
-        task.wait(1)
-    end
-    
-    TimerLabel.Text = "⚡ Running Script..."
-    smoothTween(TimerStroke, {Color = Color3.fromRGB(80, 255, 80)}, 0.3)
-    
-    local touchdownSuccess = false
-    pcall(function()
-        for _, v in pairs(workspace:GetChildren()) do
-            if v.Name == "BridgeDuelTouchdownZone" then
-                local char = player.Character
-                if char and v:GetAttribute("TouchdownZoneTeamID") ~= char:GetAttribute("Team") then
-                    local hrp = char:FindFirstChild("HumanoidRootPart")
-                    if hrp then
-                        firetouchinterest(hrp, v, 1)
-                        task.wait(0.1)
-                        firetouchinterest(hrp, v, 0)
-                        touchdownSuccess = true
-                    end
-                end
-            end
-        end
-    end)
-    
-    if touchdownSuccess then
-        totalWins = totalWins + 1
-        WinsValue.Text = tostring(totalWins)
-        
-        -- Animación de win
-        smoothTween(WinsCard, {BackgroundColor3 = Color3.fromRGB(255, 215, 0)}, 0.3)
-        task.wait(0.2)
-        smoothTween(WinsCard, {BackgroundColor3 = Color3.fromRGB(35, 35, 45)}, 0.3)
-        
-        saveWins()
-        sendDiscordEmbed(totalWins)
-    end
-    
-    for i = 2, 1, -1 do
-        TimerLabel.Text = "⏳ Winning In: " .. i .. "s"
-        task.wait(1)
-    end
-    
-    TimerLabel.Text = "🚀 TELEPORTING..."
-    smoothTween(TimerStroke, {Color = Color3.fromRGB(255, 80, 80)}, 0.3)
-    
-    task.wait(0.5)
-    
-    player:Kick()
-    task.wait(1.23)
-    local data = TeleportService:GetLocalPlayerTeleportData()
-    TeleportService:Teleport(game.PlaceId, player, data)
-    
-    task.wait(5)
-end
-```
-
-## ✅ **Cómo funciona el auto-execute:**
-
-1. **Primera vez que ejecutas:**
-   - El script se guarda automáticamente en `autoexec/bridge_duels_autofarm.lua`
-   - La GUI aparece y empieza a farmear
-
-2. **Después de cada rejoin:**
-   - Tu executor automáticamente ejecuta todos los scripts en la carpeta `autoexec`
-   - El script se carga solo, sin necesidad de hacer nada
-
-## 📁 **Ubicación del archivo:**
-```
-[TuExecutor]/
-└── autoexec/
-    └── bridge_duels_autofarm.lua  ← Script guardado aquí
-```
-
-## ⚠️ **Importante:**
-
-- **Solo ejecuta el loadstring UNA VEZ**
-- Después de eso, el script se auto-ejecutará siempre que abras Roblox
-- Si quieres **desactivarlo**, elimina el archivo `bridge_duels_autofarm.lua` de la carpeta `autoexec`
-
-## 🔄 **Para desactivar el auto-execute:**
-
-Ve a tu carpeta de executor y elimina:
-```
-autoexec/bridge_duels_autofarm.lua
+    smoothTween(ResetBtn, {BackgroundTransparency = 0
