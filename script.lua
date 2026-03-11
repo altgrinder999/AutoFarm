@@ -150,7 +150,7 @@ local function smoothTween(object, properties, duration)
     return tween
 end
 
--- ScreenGui principal
+-- ScreenGui principal (PANTALLA COMPLETA)
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = player:WaitForChild("PlayerGui")
 ScreenGui.ResetOnSpawn = false
@@ -162,77 +162,70 @@ local BlurEffect = Instance.new("BlurEffect")
 BlurEffect.Size = 0
 BlurEffect.Parent = game:GetService("Lighting")
 
--- Contenedor principal moderno
+-- Contenedor principal FULLSCREEN
 local MainContainer = Instance.new("Frame")
 MainContainer.Name = "MainContainer"
 MainContainer.Parent = ScreenGui
-MainContainer.AnchorPoint = Vector2.new(0.5, 0.5)
-MainContainer.Position = UDim2.new(0.5, 0, 0.5, 0)
-MainContainer.Size = UDim2.new(0, 480, 0, 620)
-MainContainer.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
-MainContainer.BackgroundTransparency = 0.1
+MainContainer.Position = UDim2.new(0, 0, 0, 0)
+MainContainer.Size = UDim2.new(1, 0, 1, 0) -- PANTALLA COMPLETA
+MainContainer.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+MainContainer.BackgroundTransparency = 0.05
 MainContainer.BorderSizePixel = 0
-MainContainer.ZIndex = 2
+MainContainer.ZIndex = 1
 
-local MainCorner = Instance.new("UICorner")
-MainCorner.CornerRadius = UDim.new(0, 24)
-MainCorner.Parent = MainContainer
-
-local MainStroke = Instance.new("UIStroke")
-MainStroke.Color = Color3.fromRGB(100, 100, 120)
-MainStroke.Thickness = 1
-MainStroke.Transparency = 0.7
-MainStroke.Parent = MainContainer
-
--- Gradiente sutil de fondo
+-- Gradiente de fondo fullscreen
 local MainGradient = Instance.new("UIGradient")
 MainGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(25, 25, 35)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(15, 15, 20))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(20, 20, 30)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(15, 15, 20)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 10, 15))
 }
 MainGradient.Rotation = 135
 MainGradient.Parent = MainContainer
 
--- Header moderno
+-- Header fullscreen
 local Header = Instance.new("Frame")
 Header.Name = "Header"
 Header.Parent = MainContainer
-Header.Size = UDim2.new(1, 0, 0, 70)
-Header.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+Header.Size = UDim2.new(1, 0, 0, 80)
+Header.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
 Header.BackgroundTransparency = 0.3
 Header.BorderSizePixel = 0
-Header.ZIndex = 3
+Header.ZIndex = 2
 
-local HeaderCorner = Instance.new("UICorner")
-HeaderCorner.CornerRadius = UDim.new(0, 24)
-HeaderCorner.Parent = Header
+local HeaderStroke = Instance.new("UIStroke")
+HeaderStroke.Color = Color3.fromRGB(80, 80, 100)
+HeaderStroke.Thickness = 1
+HeaderStroke.Transparency = 0.8
+HeaderStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+HeaderStroke.Parent = Header
 
 -- Logo/Título
 local TitleLabel = Instance.new("TextLabel")
 TitleLabel.Parent = Header
-TitleLabel.Position = UDim2.new(0, 20, 0, 0)
-TitleLabel.Size = UDim2.new(0, 250, 1, 0)
+TitleLabel.Position = UDim2.new(0, 30, 0, 0)
+TitleLabel.Size = UDim2.new(0, 400, 1, 0)
 TitleLabel.BackgroundTransparency = 1
 TitleLabel.Font = Enum.Font.GothamBold
-TitleLabel.Text = "⚔️ BRIDGE DUELS"
+TitleLabel.Text = "⚔️ BRIDGE DUELS AUTOFARM"
 TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TitleLabel.TextSize = 22
+TitleLabel.TextSize = 28
 TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 TitleLabel.TextStrokeTransparency = 0.8
-TitleLabel.ZIndex = 4
+TitleLabel.ZIndex = 3
 
 -- Versión badge
 local VersionBadge = Instance.new("Frame")
 VersionBadge.Parent = Header
-VersionBadge.Position = UDim2.new(1, -130, 0.5, -15)
-VersionBadge.Size = UDim2.new(0, 110, 0, 30)
+VersionBadge.Position = UDim2.new(1, -150, 0.5, -18)
+VersionBadge.Size = UDim2.new(0, 130, 0, 36)
 VersionBadge.BackgroundColor3 = Color3.fromRGB(100, 80, 255)
 VersionBadge.BackgroundTransparency = 0.2
 VersionBadge.BorderSizePixel = 0
-VersionBadge.ZIndex = 4
+VersionBadge.ZIndex = 3
 
 local VersionCorner = Instance.new("UICorner")
-VersionCorner.CornerRadius = UDim.new(0, 15)
+VersionCorner.CornerRadius = UDim.new(0, 18)
 VersionCorner.Parent = VersionBadge
 
 local VersionText = Instance.new("TextLabel")
@@ -242,15 +235,25 @@ VersionText.BackgroundTransparency = 1
 VersionText.Font = Enum.Font.GothamBold
 VersionText.Text = "v1.1 BETA"
 VersionText.TextColor3 = Color3.fromRGB(255, 255, 255)
-VersionText.TextSize = 13
-VersionText.ZIndex = 5
+VersionText.TextSize = 16
+VersionText.ZIndex = 4
+
+-- Content Container (centrado)
+local ContentContainer = Instance.new("Frame")
+ContentContainer.Name = "ContentContainer"
+ContentContainer.Parent = MainContainer
+ContentContainer.AnchorPoint = Vector2.new(0.5, 0.5)
+ContentContainer.Position = UDim2.new(0.5, 0, 0.5, 20)
+ContentContainer.Size = UDim2.new(0, 900, 0, 700)
+ContentContainer.BackgroundTransparency = 1
+ContentContainer.ZIndex = 2
 
 -- Stats Container (Cards modernas)
 local StatsContainer = Instance.new("Frame")
 StatsContainer.Name = "StatsContainer"
-StatsContainer.Parent = MainContainer
-StatsContainer.Position = UDim2.new(0, 20, 0, 90)
-StatsContainer.Size = UDim2.new(1, -40, 0, 100)
+StatsContainer.Parent = ContentContainer
+StatsContainer.Position = UDim2.new(0, 0, 0, 0)
+StatsContainer.Size = UDim2.new(1, 0, 0, 140)
 StatsContainer.BackgroundTransparency = 1
 StatsContainer.ZIndex = 3
 
@@ -259,52 +262,52 @@ local WinsCard = Instance.new("Frame")
 WinsCard.Parent = StatsContainer
 WinsCard.Position = UDim2.new(0, 0, 0, 0)
 WinsCard.Size = UDim2.new(0.48, 0, 1, 0)
-WinsCard.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
-WinsCard.BackgroundTransparency = 0.3
+WinsCard.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
+WinsCard.BackgroundTransparency = 0.2
 WinsCard.BorderSizePixel = 0
 WinsCard.ZIndex = 4
 
 local WinsCardCorner = Instance.new("UICorner")
-WinsCardCorner.CornerRadius = UDim.new(0, 16)
+WinsCardCorner.CornerRadius = UDim.new(0, 20)
 WinsCardCorner.Parent = WinsCard
 
 local WinsCardStroke = Instance.new("UIStroke")
 WinsCardStroke.Color = Color3.fromRGB(255, 165, 0)
-WinsCardStroke.Thickness = 2
-WinsCardStroke.Transparency = 0.6
+WinsCardStroke.Thickness = 3
+WinsCardStroke.Transparency = 0.5
 WinsCardStroke.Parent = WinsCard
 
 local WinsIcon = Instance.new("TextLabel")
 WinsIcon.Parent = WinsCard
-WinsIcon.Position = UDim2.new(0, 15, 0, 10)
-WinsIcon.Size = UDim2.new(0, 30, 0, 30)
+WinsIcon.Position = UDim2.new(0, 20, 0, 15)
+WinsIcon.Size = UDim2.new(0, 40, 0, 40)
 WinsIcon.BackgroundTransparency = 1
 WinsIcon.Font = Enum.Font.GothamBold
 WinsIcon.Text = "🏆"
-WinsIcon.TextSize = 24
+WinsIcon.TextSize = 32
 WinsIcon.ZIndex = 5
 
 local WinsTitle = Instance.new("TextLabel")
 WinsTitle.Parent = WinsCard
-WinsTitle.Position = UDim2.new(0, 15, 0, 45)
-WinsTitle.Size = UDim2.new(1, -30, 0, 20)
+WinsTitle.Position = UDim2.new(0, 20, 0, 60)
+WinsTitle.Size = UDim2.new(1, -40, 0, 25)
 WinsTitle.BackgroundTransparency = 1
 WinsTitle.Font = Enum.Font.Gotham
 WinsTitle.Text = "TOTAL WINS"
 WinsTitle.TextColor3 = Color3.fromRGB(150, 150, 160)
-WinsTitle.TextSize = 12
+WinsTitle.TextSize = 14
 WinsTitle.TextXAlignment = Enum.TextXAlignment.Left
 WinsTitle.ZIndex = 5
 
 local WinsValue = Instance.new("TextLabel")
 WinsValue.Parent = WinsCard
-WinsValue.Position = UDim2.new(0, 15, 0, 65)
-WinsValue.Size = UDim2.new(1, -30, 0, 25)
+WinsValue.Position = UDim2.new(0, 20, 0, 85)
+WinsValue.Size = UDim2.new(1, -40, 0, 40)
 WinsValue.BackgroundTransparency = 1
 WinsValue.Font = Enum.Font.GothamBold
 WinsValue.Text = tostring(totalWins)
 WinsValue.TextColor3 = Color3.fromRGB(255, 165, 0)
-WinsValue.TextSize = 28
+WinsValue.TextSize = 36
 WinsValue.TextXAlignment = Enum.TextXAlignment.Left
 WinsValue.ZIndex = 5
 
@@ -313,117 +316,117 @@ local TimeCard = Instance.new("Frame")
 TimeCard.Parent = StatsContainer
 TimeCard.Position = UDim2.new(0.52, 0, 0, 0)
 TimeCard.Size = UDim2.new(0.48, 0, 1, 0)
-TimeCard.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
-TimeCard.BackgroundTransparency = 0.3
+TimeCard.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
+TimeCard.BackgroundTransparency = 0.2
 TimeCard.BorderSizePixel = 0
 TimeCard.ZIndex = 4
 
 local TimeCardCorner = Instance.new("UICorner")
-TimeCardCorner.CornerRadius = UDim.new(0, 16)
+TimeCardCorner.CornerRadius = UDim.new(0, 20)
 TimeCardCorner.Parent = TimeCard
 
 local TimeCardStroke = Instance.new("UIStroke")
 TimeCardStroke.Color = Color3.fromRGB(100, 180, 255)
-TimeCardStroke.Thickness = 2
-TimeCardStroke.Transparency = 0.6
+TimeCardStroke.Thickness = 3
+TimeCardStroke.Transparency = 0.5
 TimeCardStroke.Parent = TimeCard
 
 local TimeIcon = Instance.new("TextLabel")
 TimeIcon.Parent = TimeCard
-TimeIcon.Position = UDim2.new(0, 15, 0, 10)
-TimeIcon.Size = UDim2.new(0, 30, 0, 30)
+TimeIcon.Position = UDim2.new(0, 20, 0, 15)
+TimeIcon.Size = UDim2.new(0, 40, 0, 40)
 TimeIcon.BackgroundTransparency = 1
 TimeIcon.Font = Enum.Font.GothamBold
 TimeIcon.Text = "⏱️"
-TimeIcon.TextSize = 24
+TimeIcon.TextSize = 32
 TimeIcon.ZIndex = 5
 
 local TimeTitle = Instance.new("TextLabel")
 TimeTitle.Parent = TimeCard
-TimeTitle.Position = UDim2.new(0, 15, 0, 45)
-TimeTitle.Size = UDim2.new(1, -30, 0, 20)
+TimeTitle.Position = UDim2.new(0, 20, 0, 60)
+TimeTitle.Size = UDim2.new(1, -40, 0, 25)
 TimeTitle.BackgroundTransparency = 1
 TimeTitle.Font = Enum.Font.Gotham
 TimeTitle.Text = "RUNTIME"
 TimeTitle.TextColor3 = Color3.fromRGB(150, 150, 160)
-TimeTitle.TextSize = 12
+TimeTitle.TextSize = 14
 TimeTitle.TextXAlignment = Enum.TextXAlignment.Left
 TimeTitle.ZIndex = 5
 
 local TimeValue = Instance.new("TextLabel")
 TimeValue.Parent = TimeCard
-TimeValue.Position = UDim2.new(0, 15, 0, 65)
-TimeValue.Size = UDim2.new(1, -30, 0, 25)
+TimeValue.Position = UDim2.new(0, 20, 0, 85)
+TimeValue.Size = UDim2.new(1, -40, 0, 40)
 TimeValue.BackgroundTransparency = 1
 TimeValue.Font = Enum.Font.GothamBold
 TimeValue.Text = "0s"
 TimeValue.TextColor3 = Color3.fromRGB(100, 180, 255)
-TimeValue.TextSize = 28
+TimeValue.TextSize = 36
 TimeValue.TextXAlignment = Enum.TextXAlignment.Left
 TimeValue.ZIndex = 5
 
 -- Avatar Container moderno
 local AvatarContainer = Instance.new("Frame")
-AvatarContainer.Parent = MainContainer
-AvatarContainer.Position = UDim2.new(0, 20, 0, 210)
-AvatarContainer.Size = UDim2.new(1, -40, 0, 200)
-AvatarContainer.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
-AvatarContainer.BackgroundTransparency = 0.3
+AvatarContainer.Parent = ContentContainer
+AvatarContainer.Position = UDim2.new(0, 0, 0, 160)
+AvatarContainer.Size = UDim2.new(1, 0, 0, 280)
+AvatarContainer.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+AvatarContainer.BackgroundTransparency = 0.2
 AvatarContainer.BorderSizePixel = 0
 AvatarContainer.ZIndex = 3
 
 local AvatarCorner = Instance.new("UICorner")
-AvatarCorner.CornerRadius = UDim.new(0, 16)
+AvatarCorner.CornerRadius = UDim.new(0, 20)
 AvatarCorner.Parent = AvatarContainer
 
 local AvatarStroke = Instance.new("UIStroke")
 AvatarStroke.Color = Color3.fromRGB(100, 100, 120)
-AvatarStroke.Thickness = 1
-AvatarStroke.Transparency = 0.7
+AvatarStroke.Thickness = 2
+AvatarStroke.Transparency = 0.6
 AvatarStroke.Parent = AvatarContainer
 
 -- Avatar Image
 local AvatarImage = Instance.new("ImageLabel")
 AvatarImage.Parent = AvatarContainer
-AvatarImage.Position = UDim2.new(0, 15, 0, 15)
-AvatarImage.Size = UDim2.new(0, 170, 0, 170)
-AvatarImage.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+AvatarImage.Position = UDim2.new(0, 25, 0, 25)
+AvatarImage.Size = UDim2.new(0, 230, 0, 230)
+AvatarImage.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
 AvatarImage.BorderSizePixel = 0
 AvatarImage.ScaleType = Enum.ScaleType.Crop
 AvatarImage.ZIndex = 4
 
 local AvatarImageCorner = Instance.new("UICorner")
-AvatarImageCorner.CornerRadius = UDim.new(0, 12)
+AvatarImageCorner.CornerRadius = UDim.new(0, 16)
 AvatarImageCorner.Parent = AvatarImage
 
 -- Username display
 local UsernameContainer = Instance.new("Frame")
 UsernameContainer.Parent = AvatarContainer
-UsernameContainer.Position = UDim2.new(0, 200, 0, 15)
-UsernameContainer.Size = UDim2.new(1, -215, 0, 170)
+UsernameContainer.Position = UDim2.new(0, 280, 0, 25)
+UsernameContainer.Size = UDim2.new(1, -305, 0, 230)
 UsernameContainer.BackgroundTransparency = 1
 UsernameContainer.ZIndex = 4
 
 local UsernameLabel = Instance.new("TextLabel")
 UsernameLabel.Parent = UsernameContainer
-UsernameLabel.Size = UDim2.new(1, 0, 0, 30)
+UsernameLabel.Size = UDim2.new(1, 0, 0, 35)
 UsernameLabel.BackgroundTransparency = 1
 UsernameLabel.Font = Enum.Font.Gotham
 UsernameLabel.Text = "USERNAME"
 UsernameLabel.TextColor3 = Color3.fromRGB(150, 150, 160)
-UsernameLabel.TextSize = 12
+UsernameLabel.TextSize = 16
 UsernameLabel.TextXAlignment = Enum.TextXAlignment.Left
 UsernameLabel.ZIndex = 5
 
 local UsernameValue = Instance.new("TextLabel")
 UsernameValue.Parent = UsernameContainer
-UsernameValue.Position = UDim2.new(0, 0, 0, 35)
-UsernameValue.Size = UDim2.new(1, 0, 0, 50)
+UsernameValue.Position = UDim2.new(0, 0, 0, 45)
+UsernameValue.Size = UDim2.new(1, 0, 0, 70)
 UsernameValue.BackgroundTransparency = 1
 UsernameValue.Font = Enum.Font.GothamBold
 UsernameValue.Text = "[HIDDEN]"
 UsernameValue.TextColor3 = Color3.fromRGB(255, 255, 255)
-UsernameValue.TextSize = 20
+UsernameValue.TextSize = 28
 UsernameValue.TextXAlignment = Enum.TextXAlignment.Left
 UsernameValue.TextWrapped = true
 UsernameValue.ZIndex = 5
@@ -431,40 +434,40 @@ UsernameValue.ZIndex = 5
 -- Show/Hide Username Button moderno
 local ShowUsernameBtn = Instance.new("TextButton")
 ShowUsernameBtn.Parent = UsernameContainer
-ShowUsernameBtn.Position = UDim2.new(0, 0, 1, -50)
-ShowUsernameBtn.Size = UDim2.new(1, 0, 0, 45)
+ShowUsernameBtn.Position = UDim2.new(0, 0, 1, -65)
+ShowUsernameBtn.Size = UDim2.new(1, 0, 0, 60)
 ShowUsernameBtn.BackgroundColor3 = Color3.fromRGB(70, 70, 255)
 ShowUsernameBtn.BackgroundTransparency = 0.2
 ShowUsernameBtn.BorderSizePixel = 0
 ShowUsernameBtn.Font = Enum.Font.GothamBold
-ShowUsernameBtn.Text = "🔒 SHOW"
+ShowUsernameBtn.Text = "🔒 SHOW USERNAME"
 ShowUsernameBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-ShowUsernameBtn.TextSize = 14
+ShowUsernameBtn.TextSize = 18
 ShowUsernameBtn.AutoButtonColor = false
 ShowUsernameBtn.ZIndex = 5
 
 local ShowBtnCorner = Instance.new("UICorner")
-ShowBtnCorner.CornerRadius = UDim.new(0, 10)
+ShowBtnCorner.CornerRadius = UDim.new(0, 12)
 ShowBtnCorner.Parent = ShowUsernameBtn
 
 -- Timer Container moderno
 local TimerContainer = Instance.new("Frame")
-TimerContainer.Parent = MainContainer
-TimerContainer.Position = UDim2.new(0, 20, 0, 430)
-TimerContainer.Size = UDim2.new(1, -40, 0, 80)
-TimerContainer.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
-TimerContainer.BackgroundTransparency = 0.3
+TimerContainer.Parent = ContentContainer
+TimerContainer.Position = UDim2.new(0, 0, 0, 460)
+TimerContainer.Size = UDim2.new(1, 0, 0, 110)
+TimerContainer.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+TimerContainer.BackgroundTransparency = 0.2
 TimerContainer.BorderSizePixel = 0
 TimerContainer.ZIndex = 3
 
 local TimerCorner = Instance.new("UICorner")
-TimerCorner.CornerRadius = UDim.new(0, 16)
+TimerCorner.CornerRadius = UDim.new(0, 20)
 TimerCorner.Parent = TimerContainer
 
 local TimerStroke = Instance.new("UIStroke")
 TimerStroke.Color = Color3.fromRGB(255, 215, 0)
-TimerStroke.Thickness = 2
-TimerStroke.Transparency = 0.5
+TimerStroke.Thickness = 3
+TimerStroke.Transparency = 0.4
 TimerStroke.Parent = TimerContainer
 
 local TimerGradient = Instance.new("UIGradient")
@@ -483,14 +486,14 @@ TimerLabel.BackgroundTransparency = 1
 TimerLabel.Font = Enum.Font.GothamBold
 TimerLabel.Text = "⏳ Winning In: 20s"
 TimerLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TimerLabel.TextSize = 24
+TimerLabel.TextSize = 32
 TimerLabel.ZIndex = 4
 
 -- Botones de control modernos
 local ControlsContainer = Instance.new("Frame")
-ControlsContainer.Parent = MainContainer
-ControlsContainer.Position = UDim2.new(0, 20, 0, 530)
-ControlsContainer.Size = UDim2.new(1, -40, 0, 70)
+ControlsContainer.Parent = ContentContainer
+ControlsContainer.Position = UDim2.new(0, 0, 0, 590)
+ControlsContainer.Size = UDim2.new(1, 0, 0, 90)
 ControlsContainer.BackgroundTransparency = 1
 ControlsContainer.ZIndex = 3
 
@@ -503,14 +506,14 @@ CloseBtn.BackgroundColor3 = Color3.fromRGB(255, 60, 80)
 CloseBtn.BackgroundTransparency = 0.2
 CloseBtn.BorderSizePixel = 0
 CloseBtn.Font = Enum.Font.GothamBold
-CloseBtn.Text = "✖ CLOSE"
+CloseBtn.Text = "✖ MINIMIZE"
 CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-CloseBtn.TextSize = 16
+CloseBtn.TextSize = 20
 CloseBtn.AutoButtonColor = false
 CloseBtn.ZIndex = 4
 
 local CloseBtnCorner = Instance.new("UICorner")
-CloseBtnCorner.CornerRadius = UDim.new(0, 12)
+CloseBtnCorner.CornerRadius = UDim.new(0, 16)
 CloseBtnCorner.Parent = CloseBtn
 
 -- Botón Reset moderno
@@ -522,40 +525,40 @@ ResetBtn.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
 ResetBtn.BackgroundTransparency = 0.2
 ResetBtn.BorderSizePixel = 0
 ResetBtn.Font = Enum.Font.GothamBold
-ResetBtn.Text = "🔄 RESET"
+ResetBtn.Text = "🔄 RESET WINS"
 ResetBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-ResetBtn.TextSize = 16
+ResetBtn.TextSize = 20
 ResetBtn.AutoButtonColor = false
 ResetBtn.ZIndex = 4
 
 local ResetBtnCorner = Instance.new("UICorner")
-ResetBtnCorner.CornerRadius = UDim.new(0, 12)
+ResetBtnCorner.CornerRadius = UDim.new(0, 16)
 ResetBtnCorner.Parent = ResetBtn
 
 -- Footer
 local Footer = Instance.new("TextLabel")
 Footer.Parent = MainContainer
-Footer.Position = UDim2.new(0, 0, 1, -25)
-Footer.Size = UDim2.new(1, 0, 0, 25)
+Footer.Position = UDim2.new(0, 0, 1, -35)
+Footer.Size = UDim2.new(1, 0, 0, 35)
 Footer.BackgroundTransparency = 1
 Footer.Font = Enum.Font.Gotham
 Footer.Text = "made by generacyan"
 Footer.TextColor3 = Color3.fromRGB(100, 100, 110)
-Footer.TextSize = 11
+Footer.TextSize = 14
 Footer.ZIndex = 4
 
 -- Botón para reabrir (minimizado)
 local ReopenBtn = Instance.new("TextButton")
 ReopenBtn.Parent = ScreenGui
-ReopenBtn.Position = UDim2.new(0.02, 0, 0.5, -30)
-ReopenBtn.Size = UDim2.new(0, 60, 0, 60)
+ReopenBtn.Position = UDim2.new(0.02, 0, 0.5, -35)
+ReopenBtn.Size = UDim2.new(0, 70, 0, 70)
 ReopenBtn.BackgroundColor3 = Color3.fromRGB(70, 70, 255)
 ReopenBtn.BackgroundTransparency = 0.1
 ReopenBtn.BorderSizePixel = 0
 ReopenBtn.Font = Enum.Font.GothamBold
 ReopenBtn.Text = "⚔️"
 ReopenBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-ReopenBtn.TextSize = 28
+ReopenBtn.TextSize = 32
 ReopenBtn.AutoButtonColor = false
 ReopenBtn.Visible = false
 ReopenBtn.ZIndex = 10
@@ -566,7 +569,7 @@ ReopenCorner.Parent = ReopenBtn
 
 local ReopenStroke = Instance.new("UIStroke")
 ReopenStroke.Color = Color3.fromRGB(100, 100, 255)
-ReopenStroke.Thickness = 3
+ReopenStroke.Thickness = 4
 ReopenStroke.Parent = ReopenBtn
 
 -- Cargar avatar
@@ -598,10 +601,10 @@ ShowUsernameBtn.MouseButton1Click:Connect(function()
     
     if showing then
         UsernameValue.Text = player.Name
-        ShowUsernameBtn.Text = "🔓 HIDE"
+        ShowUsernameBtn.Text = "🔓 HIDE USERNAME"
     else
         UsernameValue.Text = "[HIDDEN]"
-        ShowUsernameBtn.Text = "🔒 SHOW"
+        ShowUsernameBtn.Text = "🔒 SHOW USERNAME"
     end
 end)
 
@@ -614,12 +617,18 @@ CloseBtn.MouseLeave:Connect(function()
 end)
 
 CloseBtn.MouseButton1Click:Connect(function()
-    smoothTween(MainContainer, {Size = UDim2.new(0, 0, 0, 0)}, 0.3)
+    smoothTween(MainContainer, {BackgroundTransparency = 1}, 0.3)
     smoothTween(BlurEffect, {Size = 0}, 0.3)
+    for _, child in pairs(MainContainer:GetDescendants()) do
+        if child:IsA("GuiObject") then
+            smoothTween(child, {BackgroundTransparency = 1, TextTransparency = 1}, 0.3)
+        end
+    end
     task.wait(0.3)
     MainContainer.Visible = false
     ReopenBtn.Visible = true
-    smoothTween(ReopenBtn, {Size = UDim2.new(0, 60, 0, 60)}, 0.3)
+    ReopenBtn.Size = UDim2.new(0, 0, 0, 0)
+    smoothTween(ReopenBtn, {Size = UDim2.new(0, 70, 0, 70)}, 0.3)
 end)
 
 ResetBtn.MouseEnter:Connect(function()
@@ -637,7 +646,7 @@ ResetBtn.MouseButton1Click:Connect(function()
     WinsValue.Text = "0"
     saveWins()
     task.wait(0.1)
-    smoothTween(WinsCard, {BackgroundColor3 = Color3.fromRGB(40, 40, 50)}, 0.2)
+    smoothTween(WinsCard, {BackgroundColor3 = Color3.fromRGB(35, 35, 45)}, 0.2)
 end)
 
 ReopenBtn.MouseButton1Click:Connect(function()
@@ -645,15 +654,25 @@ ReopenBtn.MouseButton1Click:Connect(function()
     task.wait(0.2)
     ReopenBtn.Visible = false
     MainContainer.Visible = true
-    MainContainer.Size = UDim2.new(0, 0, 0, 0)
-    smoothTween(MainContainer, {Size = UDim2.new(0, 480, 0, 620)}, 0.4)
+    smoothTween(MainContainer, {BackgroundTransparency = 0.05}, 0.4)
     smoothTween(BlurEffect, {Size = 10}, 0.4)
+    for _, child in pairs(MainContainer:GetDescendants()) do
+        if child:IsA("GuiObject") then
+            if child:IsA("TextLabel") or child:IsA("TextButton") then
+                smoothTween(child, {TextTransparency = 0}, 0.4)
+            end
+            if child.Name:find("Card") or child.Name:find("Container") or child.Name:find("Btn") then
+                local originalTransparency = 0.2
+                if child.Name == "Header" or child.Name == "AvatarContainer" or child.Name == "TimerContainer" then
+                    originalTransparency = 0.2
+                end
+                smoothTween(child, {BackgroundTransparency = originalTransparency}, 0.4)
+            end
+        end
+    end
 end)
 
 -- Animación de entrada
-MainContainer.Size = UDim2.new(0, 0, 0, 0)
-task.wait(0.5)
-smoothTween(MainContainer, {Size = UDim2.new(0, 480, 0, 620)}, 0.5)
 smoothTween(BlurEffect, {Size = 10}, 0.5)
 
 -- Loop principal
@@ -692,7 +711,7 @@ while true do
         -- Animación de win
         smoothTween(WinsCard, {BackgroundColor3 = Color3.fromRGB(255, 215, 0)}, 0.3)
         task.wait(0.2)
-        smoothTween(WinsCard, {BackgroundColor3 = Color3.fromRGB(40, 40, 50)}, 0.3)
+        smoothTween(WinsCard, {BackgroundColor3 = Color3.fromRGB(35, 35, 45)}, 0.3)
         
         saveWins()
         sendDiscordEmbed(totalWins)
