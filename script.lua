@@ -101,15 +101,14 @@ local function sendDiscordEmbed(wins)
     local success, err = pcall(function()
         local embed = {
             ["embeds"] = {{
+                ["author"] = {
+                    ["name"] = player.Name .. " (@" .. player.Name .. ")",
+                    ["icon_url"] = avatarURL
+                },
                 ["title"] = "🔥 Victory Registered!",
                 ["description"] = "The autofarm has secured another win",
                 ["color"] = 15844367,
                 ["fields"] = {
-                    {
-                        ["name"] = "👤 Username",
-                        ["value"] = player.Name,
-                        ["inline"] = true
-                    },
                     {
                         ["name"] = "🏆 Total Wins",
                         ["value"] = tostring(wins),
@@ -130,9 +129,6 @@ local function sendDiscordEmbed(wins)
                         ["value"] = "Bridge Duels",
                         ["inline"] = true
                     }
-                },
-                ["thumbnail"] = {
-                    ["url"] = avatarURL
                 },
                 ["footer"] = {
                     ["text"] = "AutoFarm by generacyan"
@@ -751,3 +747,27 @@ while true do
     
     task.wait(5)
 end
+```
+
+---
+
+## ✅ **Cambio realizado:**
+
+Ahora el embed usa `"author"` en lugar de `"thumbnail"`, lo que hace que:
+- ✅ El **avatar aparece al lado izquierdo** del nombre de usuario
+- ✅ El nombre se muestra como: `"TuNombre (@TuNombre)"`
+- ✅ Se ve **exactamente como en la imagen** que enviaste
+
+**Así se verá en Discord:**
+```
+[AVATAR] TuNombre (@TuNombre)
+
+🔥 Victory Registered!
+The autofarm has secured another win
+
+🏆 Total Wins: 5
+⏱️ Running Time: 15m 32s
+📍 Place Status: In-Game
+🎮 Game: Bridge Duels
+
+AutoFarm by generacyan
