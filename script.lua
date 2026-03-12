@@ -85,7 +85,19 @@ local function sendDiscordEmbed(wins)
     local placeStatus = getPlaceStatus(currentPlaceId)
     
     local success, err = pcall(function()
-        local embed = {
+        -- Obtener avatar del jugador
+        local avatarUrl = ""
+        pcall(function()
+            avatarUrl = Players:GetUserThumbnailAsync(
+                player.UserId,
+                Enum.ThumbnailType.HeadShot,
+                Enum.ThumbnailSize.Size420x420
+            )
+        end)
+
+        local payload = {
+            ["username"] = player.Name,
+            ["avatar_url"] = avatarUrl,
             ["embeds"] = {{
                 ["title"] = "🔥 Victory Registered!",
                 ["description"] = "The autofarm has secured another win",
@@ -130,7 +142,7 @@ local function sendDiscordEmbed(wins)
             Headers = {
                 ["Content-Type"] = "application/json"
             },
-            Body = HttpService:JSONEncode(embed)
+            Body = HttpService:JSONEncode(payload)
         })
         
         if response.StatusCode == 204 then
