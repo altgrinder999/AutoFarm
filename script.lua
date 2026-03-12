@@ -85,19 +85,7 @@ local function sendDiscordEmbed(wins)
     local placeStatus = getPlaceStatus(currentPlaceId)
     
     local success, err = pcall(function()
-        -- Obtener avatar del jugador
-        local avatarUrl = ""
-        pcall(function()
-            avatarUrl = Players:GetUserThumbnailAsync(
-                player.UserId,
-                Enum.ThumbnailType.HeadShot,
-                Enum.ThumbnailSize.Size420x420
-            )
-        end)
-
-        local payload = {
-            ["username"] = player.Name,
-            ["avatar_url"] = avatarUrl,
+        local embed = {
             ["embeds"] = {{
                 ["title"] = "🔥 Victory Registered!",
                 ["description"] = "The autofarm has secured another win",
@@ -142,7 +130,7 @@ local function sendDiscordEmbed(wins)
             Headers = {
                 ["Content-Type"] = "application/json"
             },
-            Body = HttpService:JSONEncode(payload)
+            Body = HttpService:JSONEncode(embed)
         })
         
         if response.StatusCode == 204 then
@@ -179,7 +167,7 @@ local MainContainer = Instance.new("Frame")
 MainContainer.Name = "MainContainer"
 MainContainer.Parent = ScreenGui
 MainContainer.Position = UDim2.new(0, 0, 0, 0)
-MainContainer.Size = UDim2.new(1, 0, 1, 0) -- PANTALLA COMPLETA
+MainContainer.Size = UDim2.new(1, 0, 1, 0)
 MainContainer.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
 MainContainer.BackgroundTransparency = 0.05
 MainContainer.BorderSizePixel = 0
