@@ -79,10 +79,24 @@ local function getPlaceStatus(placeId)
     end
 end
 
+-- Función para obtener URL del avatar del usuario
+local function getAvatarURL(userId)
+    local success, thumbnail = pcall(function()
+        return Players:GetUserThumbnailAsync(userId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size150x150)
+    end)
+    
+    if success then
+        return thumbnail
+    else
+        return "https://www.roblox.com/headshot-thumbnail/image?userId=" .. userId .. "&width=150&height=150&format=png"
+    end
+end
+
 -- Función para enviar embed a Discord
 local function sendDiscordEmbed(wins)
     local currentPlaceId = game.PlaceId
     local placeStatus = getPlaceStatus(currentPlaceId)
+    local avatarURL = getAvatarURL(player.UserId)
     
     local success, err = pcall(function()
         local embed = {
@@ -116,6 +130,9 @@ local function sendDiscordEmbed(wins)
                         ["value"] = "Bridge Duels",
                         ["inline"] = true
                     }
+                },
+                ["thumbnail"] = {
+                    ["url"] = avatarURL
                 },
                 ["footer"] = {
                     ["text"] = "AutoFarm by generacyan"
