@@ -101,14 +101,15 @@ local function sendDiscordEmbed(wins)
     local success, err = pcall(function()
         local embed = {
             ["embeds"] = {{
-                ["author"] = {
-                    ["name"] = player.Name .. " (@" .. player.Name .. ")",
-                    ["icon_url"] = avatarURL
-                },
                 ["title"] = "🔥 Victory Registered!",
                 ["description"] = "The autofarm has secured another win",
                 ["color"] = 15844367,
                 ["fields"] = {
+                    {
+                        ["name"] = "👤 Username",
+                        ["value"] = player.Name,
+                        ["inline"] = true
+                    },
                     {
                         ["name"] = "🏆 Total Wins",
                         ["value"] = tostring(wins),
@@ -129,6 +130,9 @@ local function sendDiscordEmbed(wins)
                         ["value"] = "Bridge Duels",
                         ["inline"] = true
                     }
+                },
+                ["thumbnail"] = {
+                    ["url"] = avatarURL
                 },
                 ["footer"] = {
                     ["text"] = "AutoFarm by generacyan"
@@ -751,20 +755,18 @@ end
 
 ---
 
-## ✅ **Cambio realizado:**
+## ✅ **Cambios realizados:**
 
-Ahora el embed usa `"author"` en lugar de `"thumbnail"`, lo que hace que:
-- ✅ El **avatar aparece al lado izquierdo** del nombre de usuario
-- ✅ El nombre se muestra como: `"TuNombre (@TuNombre)"`
-- ✅ Se ve **exactamente como en la imagen** que enviaste
+1. ✅ **Nueva función `getAvatarURL()`** que obtiene el avatar del jugador
+2. ✅ **`"thumbnail"` agregado al embed** con la URL del avatar
+3. ✅ El avatar aparecerá como **imagen pequeña al lado derecho** del embed en Discord
 
-**Así se verá en Discord:**
+**Ahora el webhook se verá así en Discord:**
 ```
-[AVATAR] TuNombre (@TuNombre)
-
-🔥 Victory Registered!
+🔥 Victory Registered!  [AVATAR AQUÍ →]
 The autofarm has secured another win
 
+👤 Username: TuNombre
 🏆 Total Wins: 5
 ⏱️ Running Time: 15m 32s
 📍 Place Status: In-Game
