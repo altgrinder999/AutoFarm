@@ -481,7 +481,7 @@ TimerLabel.Parent = TimerContainer
 TimerLabel.Size = UDim2.new(1, 0, 1, 0)
 TimerLabel.BackgroundTransparency = 1
 TimerLabel.Font = Enum.Font.GothamBold
-TimerLabel.Text = "⏳ Winning In: 9s"
+TimerLabel.Text = "⏳ Winning In: 20s"
 TimerLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TimerLabel.TextSize = 24
 TimerLabel.ZIndex = 4
@@ -658,7 +658,7 @@ smoothTween(BlurEffect, {Size = 10}, 0.5)
 
 -- Loop principal
 while true do
-    for i = 9, 1, -1 do
+    for i = 20, 1, -1 do
         TimerLabel.Text = "⏳ Winning In: " .. i .. "s"
         smoothTween(TimerStroke, {Color = Color3.fromRGB(255, 215, 0)}, 0.3)
         task.wait(1)
