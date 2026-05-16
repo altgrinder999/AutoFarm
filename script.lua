@@ -1,10 +1,32 @@
+-- AUTO-EJECUCIÓN PERSISTENTE
+local RunService = game:GetService("RunService")
+local TeleportService = game:GetService("TeleportService")
+
+-- Guardar el script en una variable global para que persista entre teleports
+if not getgenv().BridgeDuelsAutoFarmActive then
+    getgenv().BridgeDuelsAutoFarmActive = true
+    
+    -- Interceptar teleports para re-ejecutar el script
+    local oldTeleport = TeleportService.Teleport
+    TeleportService.Teleport = function(...)
+        task.spawn(function()
+            task.wait(5) -- Esperar a que cargue el nuevo server
+            if game.PlaceId == 6872265039 or game.PlaceId == 8560631822 then
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/altgrinder999/AutoFarm/main/script.lua"))()
+            end
+        end)
+        return oldTeleport(...)
+    end
+    
+    print("✅ Auto-farm persistence enabled!")
+end
+
 -- ESPERAR A QUE TODO CARGUE COMPLETAMENTE
 repeat task.wait() until game:IsLoaded()
 task.wait(3)
 
 -- Servicios
 local Players = game:GetService("Players")
-local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
 local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
@@ -12,6 +34,19 @@ local player = Players.LocalPlayer
 -- Esperar a que el jugador cargue completamente
 repeat task.wait() until player.Character
 task.wait(2)
+
+-- VERIFICAR PLACE ID
+local currentPlaceId = game.PlaceId
+print("🎮 Current PlaceId:", currentPlaceId)
+
+-- Solo ejecutar en Bridge Duels
+if currentPlaceId ~= 6872265039 and currentPlaceId ~= 8560631822 then
+    warn("⚠️ This script only works in Bridge Duels!")
+    warn("⚠️ Lobby PlaceId: 6872265039")
+    warn("⚠️ In-Game PlaceId: 8560631822")
+    warn("⚠️ Your PlaceId:", currentPlaceId)
+    return
+end
 
 -- WEBHOOK DE DISCORD
 local webhookURL = "https://discord.com/api/webhooks/1472828293513220187/VwrS5wzxn_RzjPaL6t531-CIxlX-RUBGVXMgFem0Fad8nX7DBzhURj9wv5PJXNTcy98X"
@@ -79,23 +114,36 @@ local function getPlaceStatus(placeId)
     end
 end
 
+-- Función para obtener URL del avatar del usuario
+local function getAvatarURL(userId)
+    local success, thumbnail = pcall(function()
+        return Players:GetUserThumbnailAsync(userId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size150x150)
+    end)
+    
+    if success then
+        return thumbnail
+    else
+        return "https://www.roblox.com/headshot-thumbnail/image?userId=" .. userId .. "&width=150&height=150&format=png"
+    end
+end
+
 -- Función para enviar embed a Discord
 local function sendDiscordEmbed(wins)
     local currentPlaceId = game.PlaceId
     local placeStatus = getPlaceStatus(currentPlaceId)
+    local avatarURL = getAvatarURL(player.UserId)
     
     local success, err = pcall(function()
         local embed = {
             ["embeds"] = {{
+                ["author"] = {
+                    ["name"] = player.Name .. " (@" .. player.Name .. ")",
+                    ["icon_url"] = avatarURL
+                },
                 ["title"] = "🔥 Victory Registered!",
                 ["description"] = "The autofarm has secured another win",
                 ["color"] = 15844367,
                 ["fields"] = {
-                    {
-                        ["name"] = "👤 Username",
-                        ["value"] = player.Name,
-                        ["inline"] = true
-                    },
                     {
                         ["name"] = "🏆 Total Wins",
                         ["value"] = tostring(wins),
@@ -240,7 +288,7 @@ VersionText.Parent = VersionBadge
 VersionText.Size = UDim2.new(1, 0, 1, 0)
 VersionText.BackgroundTransparency = 1
 VersionText.Font = Enum.Font.GothamBold
-VersionText.Text = "v1.1 BETA"
+VersionText.Text = "v1.2 BETA"
 VersionText.TextColor3 = Color3.fromRGB(255, 255, 255)
 VersionText.TextSize = 13
 VersionText.ZIndex = 5
@@ -708,10 +756,11 @@ while true do
     
     task.wait(0.5)
     
-    player:Kick()
-    task.wait(1.23)
+    -- REJOIN MEJORADO CON TELEPORT DATA
     local data = TeleportService:GetLocalPlayerTeleportData()
-    TeleportService:Teleport(game.PlaceId, player, data)
+    player:Kick("Rejoining...")
+    task.wait(0.25)
+    TeleportService:Teleport(8560631822, player, data)
     
     task.wait(5)
 end
